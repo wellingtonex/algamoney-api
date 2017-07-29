@@ -3,6 +3,8 @@ package com.example.algamoney.api.resource;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ public class CategoriaResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Categoria> salvar(@RequestBody Categoria categoria) {
+	public ResponseEntity<Categoria> salvar(@Valid @RequestBody Categoria categoria) {
 		categoriaRepository.save(categoria);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
 				.buildAndExpand(categoria.getCodigo()).toUri();
