@@ -12,8 +12,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler{
-	
+public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
+
 	@Autowired
 	private MessageSource messageSource;
 
@@ -21,6 +21,28 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		String mensagem = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
-		return handleExceptionInternal(ex, mensagem , headers, status, request);
+		String descricao =  ex.getCause().getMessage();
+		return handleExceptionInternal(ex, new Erro(mensagem, descricao) , headers, status, request);
+	}
+
+	public class Erro {
+
+		private String mensagem;
+		private String descricao;
+
+		public Erro(String mensagem, String descricao) {
+			this.mensagem = mensagem;
+			this.descricao = descricao;
+		}
+
+		public String getMensagem() {
+			return mensagem;
+		}
+
+		public String getDescricao() {
+			return descricao;
+		}
+
+		
 	}
 }
