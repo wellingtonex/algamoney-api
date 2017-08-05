@@ -30,10 +30,10 @@ public class PessoaResource {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
-	
+
 	@Autowired
 	private PessoaService pessoaService;
-	
+
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
@@ -55,16 +55,22 @@ public class PessoaResource {
 		Pessoa pessoa = pessoaRepository.findOne(codigo);
 		return pessoa != null ? ResponseEntity.ok(pessoa) : ResponseEntity.notFound().build();
 	}
-	
+
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long codigo) {
 		pessoaRepository.delete(codigo);
 	}
-	
+
 	@PutMapping("/{codigo}")
-	public ResponseEntity<Pessoa> atualizar(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa ) {
+	public ResponseEntity<Pessoa> atualizar(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa) {
 		Pessoa pessoaSalva = pessoaService.atualizar(codigo, pessoa);
+		return ResponseEntity.ok(pessoaSalva);
+	}
+
+	@PutMapping("/{codigo}/ativo")
+	public ResponseEntity<Pessoa> atualizar(@PathVariable Long codigo, @RequestBody Boolean ativo) {
+		Pessoa pessoaSalva = pessoaService.atualizarStatus(codigo, ativo);
 		return ResponseEntity.ok(pessoaSalva);
 	}
 }

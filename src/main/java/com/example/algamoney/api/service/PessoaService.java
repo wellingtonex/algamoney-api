@@ -22,4 +22,13 @@ public class PessoaService {
 		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
 		return pessoaRepository.save(pessoaSalva);
 	}
+
+	public Pessoa atualizarStatus(Long codigo, Boolean ativo) {
+		Pessoa pessoaSalva = pessoaRepository.findOne(codigo);
+		if(pessoaSalva == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		pessoaSalva.setAtivo(ativo);
+		return pessoaRepository.save(pessoaSalva);
+	}
 }
