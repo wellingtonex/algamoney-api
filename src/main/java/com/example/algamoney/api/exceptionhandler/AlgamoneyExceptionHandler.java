@@ -30,7 +30,7 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		String mensagem = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
-		String descricao =  ex.getCause().getMessage();
+		String descricao = ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage();
 		List<Erro> erros = Arrays.asList(new Erro(mensagem, descricao));
 		return handleExceptionInternal(ex, erros , headers, status, request);
 	}
