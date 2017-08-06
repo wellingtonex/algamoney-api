@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,14 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 		String descricao =  ex.getMessage();
 		List<Erro> erros = Arrays.asList(new Erro(mensagem, descricao));
 		return handleExceptionInternal(ex, erros  , new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler({DataIntegrityViolationException.class})
+	public ResponseEntity<Object> handleDataIntegrityViolationException(RuntimeException ex, WebRequest request) {
+		String mensagem = messageSource.getMessage("mensagem.dados.invalidos", null, LocaleContextHolder.getLocale());
+		String descricao =  ex.getMessage();
+		List<Erro> erros = Arrays.asList(new Erro(mensagem, descricao));
+		return handleExceptionInternal(ex, erros  , new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 	
 	@Override
