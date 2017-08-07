@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.repository.LancamentoRepository;
+import com.example.algamoney.api.repository.filter.LancamentoFilter;
 import com.example.algamoney.api.service.LancamentoService;
 import com.example.algamoney.api.service.exception.PessoaInativaException;
 import com.example.algamoney.api.service.exception.PessoaInvalidaException;
@@ -42,9 +43,15 @@ public class LancamentoResource {
 	@Autowired
 	private LancamentoService lancamentoService;
 
+//	@GetMapping
+//	public ResponseEntity<?> listar() {
+//		List<Lancamento> lancamentos = lancamentoRepository.findAll();
+//		return lancamentos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(lancamentos);
+//	}
+	
 	@GetMapping
-	public ResponseEntity<?> listar() {
-		List<Lancamento> lancamentos = lancamentoRepository.findAll();
+	public ResponseEntity<?> Pesquisar(LancamentoFilter lancamentoFilter) {
+		List<Lancamento> lancamentos = lancamentoRepository.filtrar(lancamentoFilter);
 		return lancamentos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(lancamentos);
 	}
 	
