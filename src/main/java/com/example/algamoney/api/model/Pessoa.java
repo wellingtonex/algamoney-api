@@ -91,4 +91,10 @@ public class Pessoa {
 		return !this.ativo;
 	}
 	
+	@JsonIgnore
+	@Transient
+	public boolean isInativo() {
+		return !this.ativo;
+}
+	
 }
