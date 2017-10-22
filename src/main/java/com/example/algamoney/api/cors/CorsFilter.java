@@ -26,31 +26,33 @@ public class CorsFilter implements Filter {
 	private AlgaMoneyApiProperty algaMoneyApiProperty;
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
-
-		res.setHeader("Access-Control-Allow-Origin", algaMoneyApiProperty.getOrigemPermitida());
-		res.setHeader("Access-Control-Allow-Credentials", "true");
-
-		if ("OPTIONS".equals(req.getMethod()) && algaMoneyApiProperty.getOrigemPermitida().equals(req.getHeader("Origin"))) {
-			res.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
-			res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
-			res.setHeader("Access-Control-Max-Age", "3600");
-			res.setStatus(HttpServletResponse.SC_OK);
+		
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
+		
+		response.setHeader("Access-Control-Allow-Origin", algaMoneyApiProperty.getOrigemPermitida());
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+		
+		if ("OPTIONS".equals(request.getMethod()) && algaMoneyApiProperty.getOrigemPermitida().equals(request.getHeader("Origin"))) {
+			response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
+        	response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-XSRF-TOKEN");
+        	response.setHeader("Access-Control-Max-Age", "3600");
+			
+			response.setStatus(HttpServletResponse.SC_OK);
 		} else {
-			chain.doFilter(req, res);
+			chain.doFilter(req, resp);
 		}
+		
 	}
-
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-	}
-
+	
 	@Override
 	public void destroy() {
+	}
+
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
 	}
 
 }
