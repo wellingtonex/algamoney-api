@@ -1,5 +1,7 @@
 package com.example.algamoney.api.resource;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -43,6 +45,13 @@ public class PessoaResource {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
 	public Page<Pessoa> listar(PessoaFilter pessoaFilter, Pageable pageable) {
 		return pessoaRepository.listar(pessoaFilter, pageable);
+	}
+	
+	@GetMapping("/all")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
+	public ResponseEntity<?> listar() {
+		List<Pessoa> pessoas = pessoaRepository.findAll();
+		return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.noContent().build();
 	}
 
 	@PostMapping
