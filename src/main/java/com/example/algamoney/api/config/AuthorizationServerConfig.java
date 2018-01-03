@@ -46,19 +46,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		
 		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
 		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
 		
 		endpoints
 			.tokenStore(tokenStore())
-			.accessTokenConverter(accessTokenConverter())
+			.tokenEnhancer(tokenEnhancerChain)
 			.reuseRefreshTokens(false)
-			.authenticationManager(this.authenticationManager);
+			.authenticationManager(authenticationManager);
 	}
 
-	private TokenEnhancer tokenEnhancer() {
-		return new CustomTokenEnhancer();
+	@Bean
+	public TokenEnhancer tokenEnhancer() {
+	    return new CustomTokenEnhancer();
 	}
 
 	@Bean
