@@ -1,6 +1,7 @@
 package com.example.algamoney.api.config;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,14 +35,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.secret("@ngul@r0")
 			.scopes("read", "write")
 			.authorizedGrantTypes("password", "refresh_token")
-			.accessTokenValiditySeconds(60 * 15)
-			.refreshTokenValiditySeconds(360 * 24)
+			.accessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(5))
+			.refreshTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(15))
 		.and().withClient("mobile")
 			.secret("m0b13")
 			.scopes("read")
 			.authorizedGrantTypes("password", "refresh_token")
-			.accessTokenValiditySeconds(60 * 15)
-			.refreshTokenValiditySeconds(360 * 24);
+			.accessTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(5))
+			.refreshTokenValiditySeconds((int) TimeUnit.MINUTES.toSeconds(15));
 	}
 	
 	@Override
